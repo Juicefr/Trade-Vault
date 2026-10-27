@@ -53,5 +53,5 @@ Built by **Juice.sol**.
 
 ---
 
-*TradeVault is a personal trading journal, not financial advice or an automated trading platform.*# Trade-Vault
+*TradeVault is a personal trading journal, not financial advice or an automated trading platform.
 
