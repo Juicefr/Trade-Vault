@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3 Trading Journal</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" id="theme-toggle" aria-label="Switch color theme">
+  🌙 Dark mode
+</button>
+        <div class="brand">
+            <span class="brand-icon">J's</span>
+            <div>
+                
+                <h1>TradeVault</h1>
+                <p>WEB3 TRADING JOURNAL</p>
+            </div>
+        </div>
+
+        <span class="status">
+            <span class="status-dot"></span>
+            Personal dashboard
+        </span>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <div>
+                <p class="eyebrow">YOUR PERFORMANCE, YOUR RULES</p>
+                <h2>Trading overview</h2>
+                <p class="subtitle">
+                    Track your decisions. Learn from every trade.
+                </p>
+            </div>
+            <button id="add-trade-btn" type="button">
+                + Add trade
+            </button>
+          
+<button id="export-trades-btn" type="button">
+  Export Trades CSV
+</button>
+<button type="button" id="export-pdf-btn">
+  Export PDF Report
+</button>
+
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <p>Total trades</p>
+                <h3 id="total-trades">0</h3>
+                <span>Recorded trades</span>
+            </article>
+
+            <article class="stat-card">
+                <p>Net P/L</p>
+                <h3 id="net-pl">$0.00</h3>
+                <span>Profit and loss</span>
+            </article>
+
+            <article class="stat-card">
+                <p>Win rate</p>
+                <h3 id="win-rate">0%</h3>
+                <span>Winning trades</span>
+            </article>
+
+            <article class="stat-card">
+                <p>Winning trades</p>
+                <h3 id="winning-trades">0</h3>
+                <span>Closed trades in profit</span>
+            </article>
+
+            <article class="stat-card">
+  <h3>Max Drawdown</h3>
+  <p id="max-drawdown">$0.00</p>
+            </article>
+
+            
+<article class="stat-card">
+    <p>Average win</p>
+    <h3 id="average-win">$0.00</h3>
+    <span>Average profit per winning trade</span>
+</article>
+
+<article class="stat-card">
+    <p>Average loss</p>
+    <h3 id="average-loss">$0.00</h3>
+    <span>Average loss per losing trade</span>
+</article>
+
+<article class="stat-card">
+    <p>Profit factor</p>
+    <h3 id="profit-factor">0.00</h3>
+    <span>Gross profit ÷ gross loss</span>
+</article>
+        </section>
+
+<section class="panel trade-form-panel" id="trade-form-panel" hidden>
+    <div class="panel-heading">
+        <div>
+            <h2>Record a trade</h2>
+            <p>Enter the details of your completed trade.</p>
+        </div>
+    </div>
+
+    <form id="trade-form" class="trade-form">
+        <label>
+            Token / Asset
+            <input type="text" id="token" placeholder="e.g. BONK" required>
+        </label>
+
+        <label>
+            Chain
+            <select id="chain" required>
+                <option value="Solana">Solana</option>
+                <option value="Ethereum">Ethereum</option>
+                <option value="Base">Base</option>
+                <option value="BNB Chain">BNB Chain</option>
+                <option value="Other">Other</option>
+            </select>
+        </label>
+
+        <label>
+            Trade side
+            <select id="side" required>
+                <option value="Long">Buy / Long</option>
+                <option value="Short">Short</option>
+            </select>
+        </label>
+
+        <label>
+            Entry price (USD)
+            <input type="number" id="entry-price" min="0.000000001" step="any" placeholder="0.001" required>
+        </label>
+
+        <label>
+            Exit price (USD)
+            <input type="number" id="exit-price" min="0.000000001" step="any" placeholder="0.0015" required>
+        </label>
+
+        <label>
+            Quantity of tokens
+            <input type="number" id="quantity" min="0.000000001" step="any" placeholder="100000" required>
+        </label>
+
+        <label>
+            Total fees (USD)
+            <input type="number" id="fees" min="0" step="any" value="0" required>
+        </label>
+
+        <div class="form-actions">
+            
+<div class="form-group">
+  <label for="strategy">Strategy</label>
+  <select id="strategy" name="strategy">
+    <option value="Other">Other</option>
+    <option value="Breakout">Breakout</option>
+    <option value="Momentum">Momentum</option>
+    <option value="Reversal">Reversal</option>
+    <option value="Trend Following">Trend Following</option>
+    <option value="Scalp">Scalp</option>
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="trade-notes">Trade Notes</label>
+  <textarea
+    id="trade-notes"
+    name="trade-notes"
+    rows="1"
+    placeholder="Why did you enter? What did you learn?"
+  ></textarea>
+</div>
+
+            <button type="submit" class="primary-btn">Save trade</button>
+            <button type="button" id="cancel-trade-btn" class="secondary-btn">Cancel</button>
+        </div>
+    </form>
+</section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Trade history</h2>
+                    <p>Your recorded trading activity</p>
+                </div>
+                <span class="trade-count" id="trade-count">0 trades</span>
+            </div>
+
+            <div class="empty-state" id="empty-state">
+                <div class="empty-icon">↗</div>
+                <h3>No trades recorded yet</h3>
+                <p>Add your first trade to start tracking performance.</p>
+            </div>
+
+            <div class="table-wrapper" id="table-wrapper" hidden>
+                <div class="trade-controls">
+  <input
+    type="search"
+    id="trade-search"
+    placeholder="Search tokens..."
+  />
+
+  <select id="side-filter">
+    <option value="All">All trades</option>
+    <option value="Long">Long</option>
+    <option value="Short">Short</option>
+  </select>
+</div>
+                <table>
+                    
+<thead>
+  <tr>
+    <th>Token</th>
+    <th>Side</th>
+    <th>Strategy</th>
+    <th class = "notes-column">Notes</th>
+    <th>Entry</th>
+    <th>Exit</th>
+    <th>Net P/L</th>
+    <th>Action</th>
+  </tr>
+</thead>
+
+                    <tbody id="trade-list"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer class="signature">
+  Crafted by <span><a href="https://twitter.com/Juicefr07" target="_blank" rel="noopener noreferrer">JUICE.sol
+   </a><icon class="icon-twitter"></icon></span> © 2026
+   
+</footer>
+</body>
+</html>
